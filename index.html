@@ -417,7 +417,7 @@ function render(){
     $('playersA').textContent=`${S.players[0][S.courts[0].right]}（右） / ${S.players[0][S.courts[0].left]}（左）`;
     $('playersB').textContent=`${S.players[1][S.courts[1].right]}（右） / ${S.players[1][S.courts[1].left]}（左）`;
   } else { $('playersA').textContent=S.affil[0]||''; $('playersB').textContent=S.affil[1]||''; }
-  $('setA').textContent=S.gamesWon[0]; $('setB').textContent=S.gamesWon[1];
+  $('setA').textContent=S.gamesWon[S.sideSwapped?1:0]; $('setB').textContent=S.gamesWon[S.sideSwapped?0:1];
   for(const [side,el] of [[0,'ptA'],[1,'ptB']]){
     const badge=$(el);
     if(!S.matchOver && isPointAway(side)){ const isMatch=S.gamesWon[side]===1; badge.textContent=isMatch?'マッチポイント':'ゲームポイント'; badge.className='ptBadge show '+(isMatch?'match':'game'); }
@@ -430,7 +430,7 @@ function render(){
     if(sv.team===side && !S.matchOver){ badge.classList.add('show'); let label=`サーブ <span class="court">${sv.courtJP}</span>`; if(cfg.type==='doubles')label+=` ${sv.player}`; txt.innerHTML=label; }
     else badge.classList.remove('show');
   }
-  $('vsdot').textContent=`${headline(0)}  vs  ${headline(1)}`;
+  $('vsdot').textContent= S.sideSwapped ? `${headline(1)}  vs  ${headline(0)}` : `${headline(0)}  vs  ${headline(1)}`;
   $('court').classList.toggle('swapped', !!S.sideSwapped);
   $('undoBtn').disabled = hist.length===0;
 }
